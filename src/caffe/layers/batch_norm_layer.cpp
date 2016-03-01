@@ -20,7 +20,7 @@ namespace caffe {
       channels_ = bottom[0]->shape(1);
     eps_ = param.eps();
     if (this->blobs_.size() > 0) {
-      LOG(INFO) << "Skipping parameter initialization";
+      LOG_INFO << "Skipping parameter initialization";
     }
     else {
       this->blobs_.resize(3);

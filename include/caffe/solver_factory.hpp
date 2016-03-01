@@ -44,7 +44,7 @@
 
 #include "caffe/common.hpp"
 #include "caffe/proto/caffe.pb.h"
-
+#include <unistd.h>
 namespace caffe {
 
 template <typename Dtype>

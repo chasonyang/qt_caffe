@@ -27,7 +27,7 @@ void ROIPoolingLayer<Dtype>::LayerSetUp(const vector<Blob<Dtype>*>& bottom,
   pooled_height_ = roi_pool_param.pooled_h();
   pooled_width_ = roi_pool_param.pooled_w();
   spatial_scale_ = roi_pool_param.spatial_scale();
-  LOG(INFO) << "Spatial scale: " << spatial_scale_;
+  LOG_INFO << "Spatial scale: " << spatial_scale_;
 }
 
 template <typename Dtype>

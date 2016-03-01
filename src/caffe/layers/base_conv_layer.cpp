@@ -138,7 +138,7 @@ void BaseConvolutionLayer<Dtype>::LayerSetUp(const vector<Blob<Dtype>*>& bottom,
     if (bias_term_ && bias_shape != this->blobs_[1]->shape()) {
       Blob<Dtype> bias_shaped_blob(bias_shape);
       LOG_FATAL << "Incorrect bias shape: expected shape "
-          << bias_shaped_blob.shape_string() << "; instead, shape was "
+          << bias_shaped_blob.shape_string()<< "; instead, shape was "
           << this->blobs_[1]->shape_string();
     }
     LOG_INFO << "Skipping parameter initialization";
@@ -194,6 +194,7 @@ void BaseConvolutionLayer<Dtype>::Reshape(const vector<Blob<Dtype>*>& bottom,
   for (int top_id = 0; top_id < top.size(); ++top_id) {
     top[top_id]->Reshape(top_shape);
   }
+
   if (reverse_dimensions()) {
     conv_out_spatial_dim_ = bottom[0]->count(first_spatial_axis);
   } else {

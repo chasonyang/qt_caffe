@@ -18,7 +18,7 @@ namespace caffe {
     int channels = bottom[0]->channels();
     channel_shared_ = eltwise_affine_param.channel_shared();
     if (this->blobs_.size() > 0) {
-      LOG(INFO) << "Skipping parameter initialization";
+      LOG_INFO << "Skipping parameter initialization";
     }
     else {
       this->blobs_.resize(2);

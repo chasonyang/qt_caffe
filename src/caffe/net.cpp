@@ -221,14 +221,14 @@ void Net<Dtype>::Init(const NetParameter& in_param) {
       }
     }
     if (!layer_contributes_loss) { layer_need_backward_[layer_id] = false; }
-    if (Caffe::root_solver()) {
-      if (layer_need_backward_[layer_id]) {
-        LOG_INFO << layer_names_[layer_id] << " needs backward computation.";
-      } else {
-        LOG_INFO << layer_names_[layer_id]
-            << " does not need backward computation.";
-      }
-    }
+//    if (Caffe::root_solver()) {
+//      if (layer_need_backward_[layer_id]) {
+//        LOG_INFO << layer_names_[layer_id] << " needs backward computation.";
+//      } else {
+//        LOG_INFO << layer_names_[layer_id]
+//            << " does not need backward computation.";
+//      }
+//    }
     for (int bottom_id = 0; bottom_id < bottom_vecs_[layer_id].size();
          ++bottom_id) {
       if (layer_contributes_loss) {
@@ -406,13 +406,13 @@ void Net<Dtype>::AppendTop(const NetParameter& param, const int layer_id,
                << "' produced by multiple sources.";
   } else {
     // Normal output.
-    if (Caffe::root_solver()) {
-      if (layer_param) {
-        LOG_INFO << layer_param->name() << " -> " << blob_name;
-      } else {
-        LOG_INFO << "Input " << top_id << " -> " << blob_name;
-      }
-    }
+//    if (Caffe::root_solver()) {
+//      if (layer_param) {
+//        LOG_INFO << layer_param->name() << " -> " << blob_name;
+//      } else {
+//        LOG_INFO << "Input " << top_id << " -> " << blob_name;
+//      }
+//    }
     shared_ptr<Blob<Dtype> > blob_pointer(new Blob<Dtype>());
     const int blob_id = blobs_.size();
     blobs_.push_back(blob_pointer);
@@ -431,6 +431,7 @@ void Net<Dtype>::AppendTop(const NetParameter& param, const int layer_id,
       }
       net_input_blob_indices_.push_back(blob_id);
       net_input_blobs_.push_back(blob_pointer.get());
+
     } else {
       top_id_vecs_[layer_id].push_back(blob_id);
       top_vecs_[layer_id].push_back(blob_pointer.get());
@@ -748,7 +749,7 @@ void Net<Dtype>::ShareTrainedLayersWith(const Net* other) {
       LOG_INFO << "Ignoring source layer " << source_layer_name;
       continue;
     }
-    LOG_INFO << "Copying source layer " << source_layer_name;
+//    LOG_INFO << "Copying source layer " << source_layer_name;
     vector<shared_ptr<Blob<Dtype> > >& target_blobs =
         layers_[target_layer_id]->blobs();
     CHECK_EQ(target_blobs.size(), source_layer->blobs().size())
@@ -816,7 +817,7 @@ void Net<Dtype>::CopyTrainedLayersFrom(const NetParameter& param) {
       LOG_INFO << "Ignoring source layer " << source_layer_name;
       continue;
     }
-    LOG_INFO << "Copying source layer " << source_layer_name;
+//    LOG_INFO << "Copying source layer " << source_layer_name;
     vector<shared_ptr<Blob<Dtype> > >& target_blobs =
         layers_[target_layer_id]->blobs();
     CHECK_EQ(target_blobs.size(), source_layer.blobs_size())
@@ -872,7 +873,7 @@ void Net<Dtype>::CopyTrainedLayersFromHDF5(const string trained_filename) {
       continue;
     }
     int target_layer_id = layer_names_index_[source_layer_name];
-    LOG_INFO << "Copying source layer " << source_layer_name;
+//    LOG_INFO << "Copying source layer " << source_layer_name;
     vector<shared_ptr<Blob<Dtype> > >& target_blobs =
         layers_[target_layer_id]->blobs();
     hid_t layer_hid = H5Gopen2(data_hid, source_layer_name.c_str(),

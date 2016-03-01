@@ -4,20 +4,22 @@
 #
 #-------------------------------------------------
 
-QT       += core
-QT -= gui
-greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
-
 TARGET = caffe
-TEMPLATE = app
-CONFIG += console
-CONFIG -= app_bundle
+#TEMPLATE = app
+#CONFIG += console
+#CONFIG -= app_bundle
+QT       -= gui
+QT       += core
+TEMPLATE = lib
+CONFIG +=c++11
+DEFINES += CAFFE_SHARED_LIBRARY
 include(3rdparty/hdf5.pri)
 include(3rdparty/protobuf.pri)
 include(3rdparty/opencv.pri)
 include(3rdparty/boost.pri)
 INCLUDEPATH += $$PWD/include \
                $$PWD/src \
+
 
 SOURCES += \
     src/caffe/blob.cpp \
@@ -88,10 +90,33 @@ SOURCES += \
     src/caffe/data_reader.cpp \
     src/caffe/layer.cpp \
     src/caffe/parallel.cpp \
-    tools/caffe.cpp \
     src/caffe/util/blocking_queue.cpp \
     src/caffe/util/hdf5.cpp \
-    src/caffe/util/signal_handler.cpp
+    src/caffe/util/signal_handler.cpp \
+    src/caffe/layers/batch_norm_layer.cpp \
+    src/caffe/layers/batch_reindex_layer.cpp \
+    src/caffe/layers/bn_layer.cpp \
+    src/caffe/layers/eltwise_affine_layer.cpp \
+    src/caffe/layers/embed_layer.cpp \
+    src/caffe/layers/filter_layer.cpp \
+    src/caffe/layers/gram_layer.cpp \
+    src/caffe/layers/insanity_layer.cpp \
+    src/caffe/layers/local_layer.cpp \
+    src/caffe/layers/log_layer.cpp \
+    src/caffe/layers/multi_label_image_data_layer.cpp \
+    src/caffe/layers/noise_layer.cpp \
+    src/caffe/layers/normalize_layer.cpp \
+    src/caffe/layers/prelu_layer.cpp \
+    src/caffe/layers/reduction_layer.cpp \
+    src/caffe/layers/reshape_layer.cpp \
+    src/caffe/layers/roi_pooling_layer.cpp \
+    src/caffe/layers/smooth_L1_loss_layer.cpp \
+    src/caffe/layers/spp_layer.cpp \
+    src/caffe/layers/subregion_layer.cpp \
+    src/caffe/layers/tile_layer.cpp \
+    src/caffe/layers/transformer_layer.cpp \
+    src/caffe/layers/triplet_loss_layer.cpp \
+    src/log.cpp
 
 HEADERS  += \
     include/caffe/blob.hpp \
@@ -116,10 +141,11 @@ HEADERS  += \
     include/caffe/solver_factory.hpp \
     include/caffe/syncedmem.hpp \
     include/caffe/vision_layers.hpp \
-    log.h
+    include/log.h
 
 win32 {
     SOURCES +=     src/caffe/util/mkstemp.cpp
 }
 DEFINES +=CPU_ONLY
+
 

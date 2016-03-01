@@ -16,7 +16,7 @@ void EmbedLayer<Dtype>::LayerSetUp(const vector<Blob<Dtype>*>& bottom,
   bias_term_ = this->layer_param_.embed_param().bias_term();
   // Check if we need to set up the weights
   if (this->blobs_.size() > 0) {
-    LOG(INFO) << "Skipping parameter initialization";
+    LOG_INFO << "Skipping parameter initialization";
   } else {
     if (bias_term_) {
       this->blobs_.resize(2);
@@ -70,9 +70,9 @@ void EmbedLayer<Dtype>::Forward_cpu(const vector<Blob<Dtype>*>& bottom,
   int index;
   for (int n = 0; n < M_; ++n) {
     index = static_cast<int>(bottom_data[n]);
-    DCHECK_GE(index, 0);
-    DCHECK_LT(index, K_);
-    DCHECK_EQ(static_cast<Dtype>(index), bottom_data[n]) << "non-integer input";
+    CHECK_GE(index, 0);
+    CHECK_LT(index, K_);
+    CHECK_EQ(static_cast<Dtype>(index), bottom_data[n]) << "non-integer input";
     caffe_copy(N_, weight + index * N_, top_data + n * N_);
   }
   if (bias_term_) {
@@ -94,9 +94,9 @@ void EmbedLayer<Dtype>::Backward_cpu(const vector<Blob<Dtype>*>& top,
     int index;
     for (int n = 0; n < M_; ++n) {
       index = static_cast<int>(bottom_data[n]);
-      DCHECK_GE(index, 0);
-      DCHECK_LT(index, K_);
-      DCHECK_EQ(static_cast<Dtype>(index), bottom_data[n])
+      CHECK_GE(index, 0);
+      CHECK_LT(index, K_);
+      CHECK_EQ(static_cast<Dtype>(index), bottom_data[n])
           << "non-integer input";
       caffe_axpy(N_, Dtype(1), top_diff + n * N_, weight_diff + index * N_);
     }

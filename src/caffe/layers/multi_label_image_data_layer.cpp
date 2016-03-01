@@ -72,7 +72,7 @@ namespace caffe {
     M.at<float>(1, 1) = a * ws;
     M.at<float>(0, 2) = new_width / 2 - M.at<float>(0, 0) * face_center.x - M.at<float>(0, 1) * face_center.y;
     M.at<float>(1, 2) = new_height / 2 - M.at<float>(1, 0) * face_center.x - M.at<float>(1, 1) * face_center.y;
-    //LOG(INFO) << M.at<float>(0, 0) << " " << M.at<float>(1, 0) << " " << M.at<float>(0, 1) << " " << M.at<float>(1, 1) << " " << new_width << " " << new_height << " " << flip;
+    //LOG_INFO << M.at<float>(0, 0) << " " << M.at<float>(1, 0) << " " << M.at<float>(0, 1) << " " << M.at<float>(1, 1) << " " << new_width << " " << new_height << " " << flip;
     cv::Mat temp_;
     cv::warpAffine(input_image, temp_, M, cv::Size(new_width, new_height),
                    cv::INTER_LINEAR,
@@ -109,7 +109,7 @@ namespace caffe {
           "new_height and new_width to be set at the same time.";
     // Read the file with filenames and labels
     const string& source = image_data_param.source();
-    LOG(INFO) << "Opening file " << source;
+    LOG_INFO << "Opening file " << source;
     std::ifstream infile(source.c_str());
     string filename;
     char this_line[1024];
@@ -129,7 +129,7 @@ namespace caffe {
       }
       if (label_count == 0) {
         label_count = labels_ptr->size();
-        LOG(INFO) << "num of classifiers: " << label_count;
+        LOG_INFO << "num of classifiers: " << label_count;
       }
       else {
         CHECK_EQ(label_count, labels_ptr->size()) << "label count do not match for file:" << filename;
@@ -139,19 +139,19 @@ namespace caffe {
 
     if (image_data_param.shuffle()) {
       // randomly shuffle data
-      LOG(INFO) << "Shuffling data";
+      LOG_INFO << "Shuffling data";
       const unsigned int prefetch_rng_seed = caffe_rng_rand();
       prefetch_rng_.reset(new Caffe::RNG(prefetch_rng_seed));
       ShuffleImages();
     }
-    LOG(INFO) << "A total of " << lines_.size() << " images.";
+    LOG_INFO << "A total of " << lines_.size() << " images.";
 
     lines_id_ = 0;
     // Check if we would need to randomly skip a few data points
     if (image_data_param.rand_skip()) {
       unsigned int skip = caffe_rng_rand() %
         this->layer_param_.image_data_param().rand_skip();
-      LOG(INFO) << "Skipping first " << skip << " data points.";
+      LOG_INFO << "Skipping first " << skip << " data points.";
       CHECK_GT(lines_.size(), skip) << "Not enough points to skip";
       lines_id_ = skip;
     }
@@ -171,7 +171,7 @@ namespace caffe {
     }
     top[0]->Reshape(top_shape);
 
-    LOG(INFO) << "output data size: " << top[0]->num() << ","
+    LOG_INFO << "output data size: " << top[0]->num() << ","
       << top[0]->channels() << "," << top[0]->height() << ","
       << top[0]->width();
     // label
@@ -268,7 +268,7 @@ namespace caffe {
         lines_id_++;
         if (lines_id_ >= lines_size) {
           // We have reached the end. Restart from the first.
-          LOG(INFO) << "Restarting data prefetching from start.";
+          LOG_INFO << "Restarting data prefetching from start.";
           lines_id_ = 0;
           if (this->layer_param_.image_data_param().shuffle()) {
             ShuffleImages();
@@ -277,9 +277,9 @@ namespace caffe {
       }
     }
     batch_timer.Stop();
-    DLOG(INFO) << "Prefetch batch: " << batch_timer.MilliSeconds() << " ms.";
-    DLOG(INFO) << "     Read time: " << read_time / 1000 << " ms.";
-    DLOG(INFO) << "Transform time: " << trans_time / 1000 << " ms.";
+    LOG_INFO << "Prefetch batch: " << batch_timer.MilliSeconds() << " ms.";
+    LOG_INFO << "     Read time: " << read_time / 1000 << " ms.";
+    LOG_INFO << "Transform time: " << trans_time / 1000 << " ms.";
   }
 
   INSTANTIATE_CLASS(MultiLabelImageDataLayer);

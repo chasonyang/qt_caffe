@@ -45,11 +45,11 @@ namespace caffe {
     caffe_set<Dtype>(top[0]->count(), 0, top_data);
     for (int n = 0; n < num; n++) {
       /*theta_data += 6 * n;
-      LOG(INFO) << "theta:" << theta_data[0] << " " << theta_data[1] << " " << theta_data[2] << std::endl
+      LOG_INFO << "theta:" << theta_data[0] << " " << theta_data[1] << " " << theta_data[2] << std::endl
       << theta_data[3] << " " << theta_data[4] << " " << theta_data[5];
       theta_data -= 6 * n;*/
       /*CoordinateSource_data += n * 3 * spatial_dim;
-      LOG(INFO) << CoordinateTarget_data[0] << " " << CoordinateTarget_data[1] << " " << CoordinateTarget_data[2] << std::endl
+      LOG_INFO << CoordinateTarget_data[0] << " " << CoordinateTarget_data[1] << " " << CoordinateTarget_data[2] << std::endl
       << CoordinateTarget_data[3] << " " << CoordinateTarget_data[4] << " " << CoordinateTarget_data[5] << std::endl
       << CoordinateTarget_data[6] << " " << CoordinateTarget_data[7] << " " << CoordinateTarget_data[8]<<std::endl
       << CoordinateTarget_data[9] << " " << CoordinateTarget_data[10] << " " << CoordinateTarget_data[11] << std::endl
@@ -62,7 +62,7 @@ namespace caffe {
       caffe_cpu_gemm<Dtype>(CblasNoTrans, CblasNoTrans, 2, CoordinateTarget.shape(2), 3,
         Dtype(1), theta_data + n * 6, CoordinateTarget_data, Dtype(0), CoordinateSource_data + n * 2 * spatial_dim);
       /*CoordinateSource_data += n * 2 * spatial_dim;
-      LOG(INFO) << CoordinateSource_data[0] << " " << CoordinateSource_data[1] << " " << CoordinateSource_data[2] << std::endl
+      LOG_INFO << CoordinateSource_data[0] << " " << CoordinateSource_data[1] << " " << CoordinateSource_data[2] << std::endl
       << CoordinateSource_data[3] << " " << CoordinateSource_data[4] << " " << CoordinateSource_data[5] << std::endl
       << CoordinateSource_data[6] << " " << CoordinateSource_data[7] << " " << CoordinateSource_data[8] << std::endl
       << CoordinateSource_data[9] << " " << CoordinateSource_data[10] << " " << CoordinateSource_data[11] << std::endl
@@ -73,13 +73,13 @@ namespace caffe {
         for (int j = 0; j < bottom[0]->shape(3); j++) {
           Dtype x = CoordinateSource_data[CoordinateSource.offset(n, 0, i, j)] * bottom[0]->shape(2) / 2 + (Dtype)bottom[0]->shape(2) / 2;
           Dtype y = CoordinateSource_data[CoordinateSource.offset(n, 1, i, j)] * bottom[0]->shape(3) / 2 + (Dtype)bottom[0]->shape(3) / 2;
-          //LOG(INFO) << x << " " << y;
+          //LOG_INFO << x << " " << y;
           if (x >= 0 && x <= CoordinateSource.shape(2) - 1 && y >= 0 && y <= CoordinateSource.shape(3) - 1) {
             for (int c = 0; c < bottom[0]->shape(1); c++) {
               for (int xx = floor(x); xx <= ceil(x); xx++) {
                 for (int yy = floor(y); yy <= ceil(y); yy++) {
                   top_data[top[0]->offset(n, c, i, j)] += bottom[0]->data_at(n, c, xx, yy) * (1 - abs(x - xx)) * (1 - abs(y - yy));
-                  //LOG(INFO) <<"("<< n << " " << c << " " << i << " " << j << ")("<<x<<","<<y<<")("<<xx<<","<<yy<<") " << top_data[top[0]->offset(n, c, i, j)];
+                  //LOG_INFO <<"("<< n << " " << c << " " << i << " " << j << ")("<<x<<","<<y<<")("<<xx<<","<<yy<<") " << top_data[top[0]->offset(n, c, i, j)];
                 }
               }
             }
@@ -115,7 +115,7 @@ namespace caffe {
               for (int xx = floor(x); xx <= ceil(x); xx++) {
                 for (int yy = floor(y); yy <= ceil(y); yy++) {
                   data_diff[bottom[0]->offset(n, c, xx, yy)] += top_diff[top[0]->offset(n, c, i, j)] * (1 - abs(x - xx)) * (1 - abs(y - yy));
-                  //LOG(INFO) << n << " " << c << " " << i << " " << j << " " << data_diff[bottom[0]->offset(n, c, xx, yy)];
+                  //LOG_INFO << n << " " << c << " " << i << " " << j << " " << data_diff[bottom[0]->offset(n, c, xx, yy)];
                   CoordinateSource_diff[CoordinateSource.offset(n, 0, i, j)] += top_diff[top[0]->offset(n, c, i, j)] * bottom[0]->data_at(n, c, xx, yy) * caffe_sign<Dtype>(xx - x) * (1 - abs(y - yy)) * (Dtype)bottom[0]->shape(2) / 2;
                   CoordinateSource_diff[CoordinateSource.offset(n, 1, i, j)] += top_diff[top[0]->offset(n, c, i, j)] * bottom[0]->data_at(n, c, xx, yy) * (1 - abs(x - xx)) * caffe_sign<Dtype>(yy - y) * (Dtype)bottom[0]->shape(3) / 2;
                 }

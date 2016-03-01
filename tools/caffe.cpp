@@ -7,7 +7,7 @@ namespace bp = boost::python;
 #include <map>
 #include <string>
 #include <vector>
-
+#include <stdio.h>
 #include "boost/algorithm/string.hpp"
 #include "caffe/caffe.hpp"
 #include "caffe/util/signal_handler.h"
@@ -387,20 +387,25 @@ int main(int argc, char** argv) {
       char** argvv;
       argvv[0]="caffe";
       argvv[1]="time";
+#ifdef ANDROID
+      argvv[2]="--model=/sdcard/FaceRecognition/model.prototxt";
+#else
       argvv[2]="--model=model.prototxt";
-  caffe::GlobalInit(&argcc, &argvv);
-  if (argcc == 2) {
-#ifdef WITH_PYTHON_LAYER
-    try {
 #endif
-      return GetBrewFunction(caffe::string(argvv[1]))();
-#ifdef WITH_PYTHON_LAYER
-    } catch (bp::error_already_set) {
-      PyErr_Print();
-      return 1;
-    }
-#endif
-  } else {
-    gflags::ShowUsageWithFlagsRestrict(argv[0], "tools/caffe");
-  }
+   LOG_INFO<< argvv[0]<<argvv[1]<< argvv[2];
+//  caffe::GlobalInit(&argcc, &argvv);
+//  if (argcc == 2) {
+//#ifdef WITH_PYTHON_LAYER
+//    try {
+//#endif
+//      return GetBrewFunction(caffe::string(argvv[1]))();
+//#ifdef WITH_PYTHON_LAYER
+//    } catch (bp::error_already_set) {
+//      PyErr_Print();
+//      return 1;
+//    }
+//#endif
+//  } else {
+//    gflags::ShowUsageWithFlagsRestrict(argv[0], "tools/caffe");
+//  }
 }
