@@ -5,9 +5,6 @@
 #-------------------------------------------------
 
 TARGET = caffe
-#TEMPLATE = app
-#CONFIG += console
-#CONFIG -= app_bundle
 QT       -= gui
 QT       += core
 TEMPLATE = lib

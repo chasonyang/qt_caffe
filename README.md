@@ -34,4 +34,3 @@ android for armeabi-v7a (gcc 4.9,ndk-r10e)
 
 # 3rdpaty
 boost,gflags,google protobuf,opencv,hdf5,openblas
-remove glog (as I can't build glog with mingw,if someone know how to build it,please kindly contact me)
