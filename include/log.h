@@ -19,9 +19,9 @@ QDebug operator<<(QDebug out, const std::string& str);
 #define LOG_FATAL _LOG_ERROR()
 
 #define LOG_IF(info, condition) \
-    if (!(condition)) LOG_ERROR
+    if (!(condition)) LOG_ERROR << "Check failed: [" << # condition << "] "
 #define CHECK(condition) \
-    if (!(condition)) LOG_ERROR
+    if (!(condition)) LOG_ERROR << "Check failed: [" << # condition << "] "
 
 
 #define CHECK_EQ(val1, val2) CHECK(val1 == val2)
