@@ -47,15 +47,15 @@ void WindowDataLayer<Dtype>::DataLayerSetUp(const vector<Blob<Dtype>*>& bottom,
   //    num_windows
   //    class_index overlap x1 y1 x2 y2
 
-  LOG_INFO << "Window data layer:" << std::endl
+  LOG_INFO << "Window data layer:" << "\n"
       << "  foreground (object) overlap threshold: "
-      << this->layer_param_.window_data_param().fg_threshold() << std::endl
+      << this->layer_param_.window_data_param().fg_threshold() << "\n"
       << "  background (non-object) overlap threshold: "
-      << this->layer_param_.window_data_param().bg_threshold() << std::endl
+      << this->layer_param_.window_data_param().bg_threshold() << "\n"
       << "  foreground sampling fraction: "
-      << this->layer_param_.window_data_param().fg_fraction() << std::endl
+      << this->layer_param_.window_data_param().fg_fraction() << "\n"
       << "  cache_images: "
-      << this->layer_param_.window_data_param().cache_images() << std::endl
+      << this->layer_param_.window_data_param().cache_images() << "\n"
       << "  root_folder: "
       << this->layer_param_.window_data_param().root_folder();
 
@@ -74,7 +74,7 @@ void WindowDataLayer<Dtype>::DataLayerSetUp(const vector<Blob<Dtype>*>& bottom,
 
   std::ifstream infile(this->layer_param_.window_data_param().source().c_str());
   CHECK(infile.good()) << "Failed to open window file "
-      << this->layer_param_.window_data_param().source() << std::endl;
+      << this->layer_param_.window_data_param().source() << "\n";
 
   map<int, int> label_hist;
   label_hist.insert(std::make_pair(0, 0));
